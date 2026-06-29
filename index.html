@@ -5,25 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#ff9aa2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>Lists</title>
   <style>
     :root {
-      --bg: #F5F4F0;
+      /* ── BASE & BACKGROUND COLORS ── */
+      --bg: #FAF9F6;
       --surface: #FFFFFF;
-      --surface2: #EFEFEB;
-      --border: #E2E0D8;
-      --text: #1A1A1A;
+      --surface2: #F3F2EF;
+      --border: #F3F2EF;
+      --text: #1C1B18;
       --text-muted: #8A8880;
-      --amber: #E8A838;
-      --amber-light: #FFF3D6;
-      --amber-dark: #C48820;
-      --purple: #8B6BB5;
-      --purple-light: #F0EBFF;
-      --teal: #4AADA8;
-      --teal-light: #E4F7F6;
-      --red: #E05252;
-      --red-light: #FFEBEB;
-      --green: #52A878;
+
+      /* ── CORE ACCENT COLORS ── */
+      /* Purple: Primary Action / Brand */
+      --purple: #8fa0e6;
+      --purple-light: #c7ceff;
+      --purple-dark: #1a2b75;
+
+      /* Teal: Active Tabs / Selected States */
+      --teal: #5cb395;
+      --teal-light: #b5ead7;
+
+      /* Pink/Rose: Theme Color / Checked States */
+      --pink: #ff758f;
+      --pink-light: #ffe5ec;
+      --pink-meta: #ff9aa2;
+
+      /* Blue: Inventory Templates / Neutral Action */
+      --blue: #1e40af;
+      --blue-light: #dbeafe;
+
+      /* Amber: Secondary Action / End Trip */
+      --amber: #d99a73;
+      --amber-light: #ffdac1;
+
+      /* Layout & System Constants */
       --safe-top: env(safe-area-inset-top, 44px);
       --safe-bottom: env(safe-area-inset-bottom, 20px);
       --tab-h: 56px;
@@ -35,9 +55,10 @@
     html, body {
       height: 100%;
       background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text);
       overflow: hidden;
+      letter-spacing: -0.2px;
     }
 
     /* ── APP SHELL ── */
@@ -60,9 +81,9 @@
       flex-shrink: 0;
     }
     header h1 {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 22px;
+      font-weight: 750;
+      letter-spacing: -0.6px;
       color: var(--text);
     }
     .header-actions {
@@ -80,10 +101,10 @@
       cursor: pointer;
       border-radius: 12px;
       color: var(--text-muted);
-      font-size: 20px;
-      transition: background 0.15s;
+      transition: all 0.15s;
     }
-    .icon-btn:active { background: var(--surface2); }
+    .icon-btn:active { background: var(--surface2); color: var(--text); }
+    .icon-btn svg { stroke: currentColor; }
 
     /* ── STORE TABS ── */
     #tab-bar {
@@ -110,17 +131,17 @@
       background: var(--surface);
       color: var(--text-muted);
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
       scroll-snap-align: start;
       min-width: 44px;
     }
     .tab-btn.active {
-      background: var(--text);
-      color: #fff;
-      border-color: var(--text);
+      background: var(--teal-light);
+      color: var(--text);
+      border-color: var(--teal);
     }
 
     /* ── SWIPEABLE VIEWS ── */
@@ -164,7 +185,7 @@
     }
     .section-count {
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-muted);
       background: var(--surface2);
       padding: 2px 8px;
@@ -194,53 +215,57 @@
     .active-item:active { background: var(--surface2); }
 
     .check-circle {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      border: 2px solid var(--border);
+      border: 2px solid var(--surface2);
+      background: var(--bg);
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       margin: 9px 0;
+      color: transparent;
     }
+    .check-circle svg { stroke: currentColor; }
     .active-item.checked .check-circle {
-      background: var(--teal);
-      border-color: var(--teal);
-      color: white;
-      font-size: 13px;
+      background: var(--pink);
+      border-color: var(--pink);
+      color: var(--surface);
     }
     .active-item-name {
       flex: 1;
       font-size: 16px;
-      font-weight: 450;
+      font-weight: 500;
       transition: all 0.15s;
       padding: 14px 0;
     }
     .active-item.checked .active-item-name {
       text-decoration: line-through;
       color: var(--text-muted);
+      opacity: 0.6;
     }
 
     .end-trip-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       margin: 12px 16px 0;
       width: calc(100% - 32px);
       height: 48px;
       border-radius: 14px;
       border: none;
-      background: var(--teal-light);
-      color: var(--teal);
+      background: var(--amber-light);
+      color: var(--text);
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
     }
     .end-trip-btn:active { opacity: 0.7; }
+    .end-trip-btn svg { stroke: currentColor; }
 
     /* ── MASTER INVENTORY ── */
     .pool-item {
@@ -257,7 +282,7 @@
       flex: 1;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       background: none;
       border: none;
       text-align: left;
@@ -272,27 +297,28 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--amber);
+      background: var(--blue);
       flex-shrink: 0;
-      transition: all 0.15s;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .pool-item.in-active .pool-item-dot {
       background: var(--teal);
     }
     .pool-item-name {
       font-size: 16px;
-      font-weight: 450;
+      font-weight: 500;
       color: var(--text);
       transition: color 0.15s;
     }
     .pool-item.in-active .pool-item-name {
       color: var(--teal);
+      font-weight: 600;
     }
 
     .active-badge {
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       color: var(--teal);
       background: var(--teal-light);
       padding: 2px 7px;
@@ -312,12 +338,12 @@
       background: none;
       cursor: pointer;
       color: var(--text-muted);
-      font-size: 18px;
       border-radius: 10px;
       flex-shrink: 0;
       transition: all 0.15s;
     }
-    .pool-delete-btn:active { background: var(--red-light); color: var(--red); }
+    .pool-delete-btn svg { stroke: currentColor; }
+    .pool-delete-btn:active { background: var(--pink-light); color: var(--pink); }
 
     /* ── ADD NEW ITEM BTN ── */
     .add-item-btn {
@@ -329,33 +355,46 @@
       width: calc(100% - 32px);
       height: 48px;
       border-radius: 14px;
-      border: 1.5px dashed var(--border);
+      border: 1.5px dashed var(--purple);
       background: var(--surface);
-      color: var(--text-muted);
+      color: var(--purple-dark);
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
     }
-    .add-item-btn:active { background: var(--surface2); }
+    .add-item-btn:active { background: var(--purple-light); }
+    .add-item-btn svg { stroke: currentColor; }
 
     /* ── EMPTY STATES ── */
     .empty-state {
-      padding: 28px 20px;
+      padding: 32px 20px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .empty-state-icon { font-size: 36px; margin-bottom: 8px; }
+    .empty-state-icon { 
+      margin-bottom: 12px; 
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .empty-state-icon svg { stroke: currentColor; }
     .empty-state p {
       font-size: 14px;
       color: var(--text-muted);
       line-height: 1.5;
+      font-weight: 500;
     }
 
     /* ── BOTTOM SHEET ── */
     #sheet-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(28, 27, 24, 0.4);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s;
@@ -382,13 +421,14 @@
     .sheet-handle {
       width: 40px;
       height: 5px;
-      background: var(--border);
+      background: var(--surface2);
       border-radius: 3px;
       margin: 0 auto 20px;
     }
     .sheet-title {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: -0.4px;
       color: var(--text);
       margin-bottom: 16px;
     }
@@ -397,7 +437,7 @@
       height: 50px;
       border-radius: 14px;
       border: 1.5px solid var(--border);
-      background: var(--surface2);
+      background: var(--bg);
       font-size: 16px;
       padding: 0 16px;
       color: var(--text);
@@ -406,7 +446,7 @@
       transition: border-color 0.15s;
       -webkit-appearance: none;
     }
-    .sheet-input:focus { border-color: var(--purple); }
+    .sheet-input:focus { border-color: var(--purple); background: var(--surface); }
 
     .sheet-actions {
       display: flex;
@@ -431,9 +471,9 @@
       border-radius: 14px;
       border: none;
       background: var(--purple);
-      color: #fff;
+      color: var(--purple-dark);
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       font-family: inherit;
       transition: opacity 0.15s;
@@ -444,7 +484,7 @@
     #settings-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(28, 27, 24, 0.4);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s;
@@ -466,8 +506,9 @@
     }
     #settings-panel.open { transform: translateY(0); }
     .settings-title {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: -0.4px;
       margin-bottom: 20px;
     }
     .settings-row {
@@ -478,8 +519,8 @@
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       transition: background 0.1s;
-      border-radius: 8px;
-      padding: 0 4px;
+      border-radius: 12px;
+      padding: 0 8px;
     }
     .settings-row:last-child { border-bottom: none; }
     .settings-row:active { background: var(--surface2); }
@@ -491,10 +532,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      color: var(--text);
     }
-    .settings-label { font-size: 16px; font-weight: 500; }
-    .settings-chevron { color: var(--text-muted); font-size: 18px; }
+    .settings-icon svg { stroke: currentColor; fill: none; }
+    .settings-label { font-size: 16px; font-weight: 600; }
+    .settings-chevron { color: var(--text-muted); display: flex; align-items: center; }
+    .settings-chevron svg { stroke: currentColor; fill: none; }
 
     /* ── WAKE LOCK INDICATOR ── */
     #wake-indicator {
@@ -504,11 +547,11 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--green);
+      background: var(--teal);
       opacity: 0;
       transition: opacity 0.3s;
       z-index: 50;
-      box-shadow: 0 0 6px var(--green);
+      box-shadow: 0 0 6px var(--teal);
     }
     #wake-indicator.active { opacity: 1; }
 
@@ -519,15 +562,16 @@
       left: 50%;
       transform: translateX(-50%) translateY(80px);
       background: var(--text);
-      color: #fff;
+      color: var(--surface);
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       padding: 10px 20px;
       border-radius: 20px;
       z-index: 200;
       transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
       white-space: nowrap;
       pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -541,7 +585,12 @@
   <header>
     <h1>Lists</h1>
     <div class="header-actions">
-      <button class="icon-btn" id="settings-btn" title="Settings">⚙️</button>
+      <button class="icon-btn" id="settings-btn" title="Settings">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
     </div>
   </header>
 
@@ -571,24 +620,36 @@
   <div class="settings-title">Settings & Backup</div>
   <div class="settings-row" id="export-btn">
     <div class="settings-row-left">
-      <div class="settings-icon" style="background:#FFF3D6">📤</div>
+      <div class="settings-icon" style="background: var(--amber-light)">
+        <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      </div>
       <span class="settings-label">Export Backup</span>
     </div>
-    <span class="settings-chevron">›</span>
+    <span class="settings-chevron">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </span>
   </div>
   <div class="settings-row" id="import-btn">
     <div class="settings-row-left">
-      <div class="settings-icon" style="background:#F0EBFF">📥</div>
+      <div class="settings-icon" style="background: var(--purple-light)">
+        <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      </div>
       <span class="settings-label">Import Backup</span>
     </div>
-    <span class="settings-chevron">›</span>
+    <span class="settings-chevron">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </span>
   </div>
   <div class="settings-row" id="reset-btn">
     <div class="settings-row-left">
-      <div class="settings-icon" style="background:#FFEBEB">🔄</div>
+      <div class="settings-icon" style="background: var(--pink-light)">
+        <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+      </div>
       <span class="settings-label">Reset to Defaults</span>
     </div>
-    <span class="settings-chevron">›</span>
+    <span class="settings-chevron">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </span>
   </div>
 </div>
 
@@ -645,6 +706,7 @@ function saveState() {
   localStorage.setItem('lists_app_v1', JSON.stringify(state));
 }
 
+// Generates a random alphanumeric id string
 function uid() {
   return Math.random().toString(36).slice(2, 10);
 }
@@ -733,18 +795,23 @@ function buildStoreHTML(storeName) {
     html += `<div class="list-card">`;
     s.active.forEach(item => {
       html += `<div class="active-item${item.checked ? ' checked' : ''}" data-active-id="${item.id}" data-store="${storeName}">
-        <div class="check-circle">${item.checked ? '✓' : ''}</div>
+        <div class="check-circle">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
         <span class="active-item-name">${escHtml(item.name)}</span>
       </div>`;
     });
     html += `</div>`;
     html += `<button class="end-trip-btn" data-store="${storeName}">
-      <span>✓</span> End Trip
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>End Trip</span>
     </button>`;
   } else {
     html += `<div class="list-card">
       <div class="empty-state">
-        <div class="empty-state-icon">🛒</div>
+        <div class="empty-state-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        </div>
         <p>Tap items below to add them to your list</p>
       </div>
     </div>`;
@@ -768,14 +835,18 @@ function buildStoreHTML(storeName) {
           <span class="pool-item-name">${escHtml(item.name)}</span>
           <span class="active-badge">ON LIST</span>
         </button>
-        <button class="pool-delete-btn" data-pool-id="${item.id}" data-store="${storeName}" aria-label="Remove from inventory">×</button>
+        <button class="pool-delete-btn" data-pool-id="${item.id}" data-store="${storeName}" aria-label="Remove from inventory">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>`;
     });
     html += `</div>`;
   } else {
     html += `<div class="list-card">
       <div class="empty-state">
-        <div class="empty-state-icon">📝</div>
+        <div class="empty-state-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        </div>
         <p>No items yet. Add one below.</p>
       </div>
     </div>`;
@@ -783,7 +854,10 @@ function buildStoreHTML(storeName) {
   html += `</div>`;
 
   // ── Add button ──
-  html += `<button class="add-item-btn" data-store="${storeName}">＋ Add Item to Inventory</button>`;
+  html += `<button class="add-item-btn" data-store="${storeName}">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></svg>
+    <span>Add Item to Inventory</span>
+  </button>`;
 
   return html;
 }
@@ -963,8 +1037,12 @@ document.getElementById('sheet-input').addEventListener('keydown', e => {
 });
 
 function addItemFromSheet() {
-  const val = document.getElementById('sheet-input').value.trim();
+  let val = document.getElementById('sheet-input').value.trim();
   if (!val || !sheetTargetStore) return;
+  
+  // Format the item name with the first letter capitalized
+  val = val.charAt(0).toUpperCase() + val.slice(1);
+  
   const s = state.stores[sheetTargetStore];
   if (!s) return;
   
