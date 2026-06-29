@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ff9aa2" />
+    <title>Lists</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FAF9F6'/><path d='M30 40h40M30 55h40M30 70h25' stroke='%238fa0e6' stroke-width='8' stroke-linecap='round'/><circle cx='70' cy='70' r='6' fill='%235cb395'/></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FAF9F6'/><path d='M30 40h40M30 55h40M30 70h25' stroke='%238fa0e6' stroke-width='8' stroke-linecap='round'/><circle cx='70' cy='70' r='6' fill='%235cb395'/></svg>" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
+
+        :root {
+            /* Core UI Colors */
+            --bg: #FAF9F6;
+            --surface: #FFFFFF;
+            --surface2: #F3F2EF;
+            --text-primary: #1C1B18;
+            --text-secondary: #6B6A65;
+            --text-hint: #A4A39F;
+            --border: rgba(0,0,0,0.06);
+            --border-med: rgba(0,0,0,0.12);
+
+            /* Contextual Pastel Accent Tracks */
+            --amber-50: #ffdac1;
+            --amber-600: #d99a73;
+            --amber-800: #704214;
+
+            --teal-50: #b5ead7;
+            --teal-600: #5cb395;
+            --teal-800: #0c513f;
+
+            --pink-50: #ffe5ec;
+            --pink-600: #ff758f;
+            --pink-800: #a4133c;
+
+            --purple-50: #c7ceff;
+            --purple-600: #8fa0e6;
+            --purple-800: #1a2b75;
+
+            --blue-50: #dbeafe;
+            --blue-800: #1e40af;
+
+            --gray-50: #f7f3c7;
+            --gray-600: #666127;
+
+            /* Border Radius & Touch Layout Rules */
+            --radius-lg: 18px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --touch-target: 44px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            padding-top: max(16px, env(safe-area-inset-top));
+            padding-bottom: max(16px, env(safe-area-inset-bottom));
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Top Utilities Bar */
+        .utility-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+        }
+
+        .utility-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .utility-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-utility {
+            min-height: var(--touch-target);
+            padding: 0 12px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Navigation Tabs (Pastel Teal) */
+        .store-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 4px 0 12px 0;
+            scrollbar-width: none;
+        }
+        .store-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            min-height: var(--touch-target);
+            padding: 0 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab.active {
+            background: var(--teal-50);
+            color: var(--teal-800);
+            border-color: var(--teal-600);
+            box-shadow: 0 4px 10px rgba(181, 234, 215, 0.4);
+        }
+
+        /* View Toggle Segmented Control */
+        .segmented-control {
+            display: flex;
+            background: var(--surface2);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .segment-btn {
+            flex: 1;
+            min-height: calc(var(--touch-target) - 8px);
+            background: transparent;
+            border: none;
+            border-radius: calc(var(--radius-md) - 2px);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .segment-btn.active {
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        /* Sticky Main Search Bar Container */
+        .search-container {
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        
+        .main-search-input {
+            width: 100%;
+            min-height: 38px;
+            border: 1px solid var(--border-med);
+            border-radius: var(--radius-sm);
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+        
+        .main-search-input:focus {
+            border-color: var(--purple-600);
+            box-shadow: 0 0 0 2px var(--purple-50);
+        }
+
+        /* Master Inventory operations toolbar */
+        .bulk-actions-toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 10px 16px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .btn-bulk-action {
+            background: transparent;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--purple-800);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .btn-bulk-action.clear-type {
+            color: var(--pink-600);
+        }
+
+        /* Main View Window */
+        .view-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.01);
+            position: relative;
+        }
+
+        .list-content {
+            padding: 8px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Grocery Items List Elements */
+        .item-row {
+            min-height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--surface2);
+            padding: 4px 0;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .item-interactive-zone {
+            flex: 1;
+            min-height: var(--touch-target);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+        }
+
+        .checkbox-ui {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-med);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--surface);
+        }
+
+        /* Shopping List View: Checked Items (Soft Pink Accent) */
+        .item-row.checked .checkbox-ui {
+            background: var(--pink-50);
+            border-color: var(--pink-600);
+        }
+
+        .item-row.checked .checkbox-ui::after {
+            content: '✓';
+            color: var(--pink-800);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Master Inventory View: Default state - Plus Sign (Not yet added to shopping list) */
+        .item-row.not-added .checkbox-ui {
+            background: var(--blue-50);
+            border-color: var(--blue-800);
+        }
+
+        .item-row.not-added .checkbox-ui::after {
+            content: '+';
+            color: var(--blue-800);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Master Inventory View: Checked/Added state - Checkmark (Already added to shopping list) */
+        .item-row.is-added .checkbox-ui {
+            background: var(--teal-50);
+            border-color: var(--teal-600);
+        }
+
+        .item-row.is-added .checkbox-ui::after {
+            content: '✓';
+            color: var(--teal-800);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .item-row.checked .item-name {
+            text-decoration: line-through;
+            color: var(--text-hint);
+        }
+
+        .item-row-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-edit-item {
+            width: var(--touch-target);
+            height: var(--touch-target);
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            width: var(--touch-target);
+            height: var(--touch-target);
+            background: transparent;
+            border: none;
+            color: var(--pink-600);
+            font-size: 22px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Fixed Action Footer Buttons */
+        .action-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Add Items Button (Soft Purple Accent) */
+        .btn-primary {
+            flex: 2;
+            min-height: 50px;
+            background: var(--purple-50);
+            color: var(--purple-800);
+            border: 1px solid var(--purple-600);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(199, 206, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* End Trip Button (Soft Amber Accent) */
+        .btn-secondary {
+            flex: 1;
+            min-height: 50px;
+            background: var(--amber-50);
+            color: var(--amber-800);
+            border: 1px solid var(--amber-600);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* iOS-Style Bottom Sheet Backdrop */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(28, 27, 24, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 1000;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* iOS Bottom Sheet Modal */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 80vh;
+            background: var(--surface);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            padding: 24px 20px;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom));
+            z-index: 1010;
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bottom-sheet.open {
+            transform: translateY(0);
+        }
+
+        .sheet-handle {
+            width: 38px;
+            height: 5px;
+            background: var(--border-med);
+            border-radius: 3px;
+            margin: -12px auto 20px auto;
+            flex-shrink: 0;
+        }
+
+        .sheet-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+            flex-shrink: 0;
+            color: var(--text-primary);
+        }
+
+        .sheet-search-wrapper {
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .sheet-input {
+            width: 100%;
+            min-height: var(--touch-target);
+            border: 2px solid var(--border-med);
+            border-radius: var(--radius-md);
+            padding: 0 16px;
+            font-size: 16px;
+            outline: none;
+            background: var(--surface2);
+            color: var(--text-primary);
+        }
+
+        .sheet-input:focus {
+            border-color: var(--purple-600);
+            background: var(--surface);
+        }
+
+        /* Scrollable Selection Window */
+        .sheet-selection-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface2);
+            padding: 6px;
+        }
+
+        .select-option-row {
+            min-height: var(--touch-target);
+            padding: 10px 14px;
+            background: var(--surface);
+            margin-bottom: 6px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+        }
+        
+        .select-option-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .select-option-row:active {
+            background: var(--purple-50);
+            color: var(--purple-800);
+        }
+
+        .sheet-info-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="utility-bar">
+        <div class="utility-title">Lists</div>
+        <div class="utility-buttons">
+            <button class="btn-utility" onclick="exportBackup()">Export</button>
+            <button class="btn-utility" onclick="triggerImport()">Import</button>
+            <button class="btn-utility" onclick="resetData()">Reset</button>
+        </div>
+    </div>
+    <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="handleImport(event)" />
+
+    <div class="store-tabs" id="storeTabs"></div>
+
+    <div class="segmented-control">
+        <button class="segment-btn active" id="btnViewActive" onclick="setViewMode('active')">Shopping List</button>
+        <button class="segment-btn" id="btnViewMaster" onclick="setViewMode('master')">Master Inventory</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="mainSearchInput" class="main-search-input" placeholder="Filter current list..." oninput="handleMainSearch(this.value)" autocomplete="off"/>
+    </div>
+
+    <div class="view-wrapper" id="mainView">
+        <div class="bulk-actions-toolbar" id="bulkActionsToolbar" style="display: none;">
+            <button class="btn-bulk-action" onclick="bulkSelectAllMaster()">⊕ Select All</button>
+            <button class="btn-bulk-action clear-type" onclick="bulkClearAllMaster()">⊘ Clear All</button>
+        </div>
+        <div class="list-content" id="listContent"></div>
+    </div>
+
+    <div class="action-footer">
+        <button class="btn-secondary" id="btnEndTrip" onclick="endTrip()">End Trip</button>
+        <button class="btn-primary" onclick="openAddItemModal()">+ Add Items</button>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop" onclick="closeAddItemModal()"></div>
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title" id="sheetTitle">Add to Shopping List</div>
+        
+        <div class="sheet-search-wrapper">
+            <form onsubmit="handleManualSearchSubmit(event)">
+                <input type="text" id="sheetSearchInput" class="sheet-input" placeholder="Search inventory or type new item..." autocomplete="off" oninput="renderSheetOptions()" />
+            </form>
+        </div>
+
+        <div class="sheet-selection-list" id="sheetSelectionList"></div>
+
+        <div class="sheet-info-text" id="sheetInfoText">Tap an item to add it directly. Press Enter to build a new item.</div>
+    </div>
+
+    <script>
+        // 2. Strict Configuration Architecture
+        const APP_CONFIG = {
+            stores: [
+                {
+                    id: "costco",
+                    name: "Costco Wholesale",
+                    items: ["Paper Towels", "Rotisserie Chicken", "Organic Eggs", "Greek Yogurt", "Berries Box"]
+                },
+                {
+                    id: "wegmans",
+                    name: "Wegman's",
+                    items: ["Fresh Produce", "Bakery Bread", "Wegmans Sparkling Water", "Cheese Board Selection"]
+                },
+                {
+                    id: "whole-foods",
+                    name: "Whole Foods",
+                    items: ["Organic Apples", "Atlantic Salmon", "Olive Oil", "Almond Butter"]
+                }
+            ]
+        };
+
+        const STORAGE_KEY = 'grocery_app_engine_data';
+        let appState = null;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let wakeLockObj = null;
+        let mainSearchQuery = '';
+
+        // 3. Engine Bootstrapper & Data Initialization Loop
+        function initApp() {
+            const persisted = localStorage.getItem(STORAGE_KEY);
+            if (persisted) {
+                try {
+                    appState = JSON.parse(persisted);
+                } catch (e) {
+                    seedApplicationData();
+                }
+            } else {
+                seedApplicationData();
+            }
+
+            if (!appState.activeStoreId) appState.activeStoreId = APP_CONFIG.stores[0].id;
+            if (!appState.viewMode) appState.viewMode = 'active';
+
+            setupGestureListeners();
+            evalWakeLockStatus();
+            renderUI();
+        }
+
+        function seedApplicationData() {
+            appState = {
+                activeStoreId: APP_CONFIG.stores[0].id,
+                viewMode: 'active',
+                storeData: {}
+            };
+
+            APP_CONFIG.stores.forEach(store => {
+                appState.storeData[store.id] = store.items.map((itemName, index) => ({
+                    id: `${store.id}-${Date.now()}-${index}`,
+                    name: itemName,
+                    inActiveList: true, 
+                    checked: false
+                }));
+            });
+            saveAppState();
+        }
+
+        function saveAppState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            evalWakeLockStatus();
+        }
+
+        // 4. Gesture Infrastructure & Axis Locking Architecture
+        function setupGestureListeners() {
+            const targetElement = document.getElementById('mainView');
+
+            targetElement.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].clientX;
+                touchStartY = e.changedTouches[0].clientY;
+            }, { passive: true });
+
+            targetElement.addEventListener('touchend', (e) => {
+                const deltaX = e.changedTouches[0].clientX - touchStartX;
+                const deltaY = e.changedTouches[0].clientY - touchStartY;
+
+                if (Math.abs(deltaX) > Math.abs(deltaY) * 1.8 && Math.abs(deltaX) > 60) {
+                    const storeIds = APP_CONFIG.stores.map(s => s.id);
+                    const currentIndex = storeIds.indexOf(appState.activeStoreId);
+
+                    if (deltaX > 0) {
+                        if (currentIndex > 0) {
+                            switchStore(storeIds[currentIndex - 1]);
+                        }
+                    } else {
+                        if (currentIndex < storeIds.length - 1) {
+                            switchStore(storeIds[currentIndex + 1]);
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
+
+        function switchStore(storeId) {
+            appState.activeStoreId = storeId;
+            clearMainSearch();
+            saveAppState();
+            renderUI();
+            scrollActiveTabIntoView();
+        }
+
+        function setViewMode(mode) {
+            appState.viewMode = mode;
+            clearMainSearch();
+            saveAppState();
+            renderUI();
+        }
+
+        function handleMainSearch(value) {
+            mainSearchQuery = value.trim().toLowerCase();
+            renderUI();
+        }
+
+        function clearMainSearch() {
+            mainSearchQuery = '';
+            document.getElementById('mainSearchInput').value = '';
+        }
+
+        function scrollActiveTabIntoView() {
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab) {
+                activeTab.parentNode.scrollTo({
+                    left: activeTab.offsetLeft - 20,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // 5. App Core Workflows (Master vs Active Mutation Space)
+        function toggleItemActiveState(itemId) {
+            const items = appState.storeData[appState.activeStoreId] || [];
+            const target = items.find(i => i.id === itemId);
+            if (target) {
+                target.inActiveList = !target.inActiveList;
+                if (!target.inActiveList) {
+                    target.checked = false; 
+                }
+                saveAppState();
+                renderUI();
+            }
+        }
+
+        function toggleItemCheckedState(itemId) {
+            const items = appState.storeData[appState.activeStoreId] || [];
+            const target = items.find(i => i.id === itemId);
+            if (target) {
+                target.checked = !target.checked;
+                saveAppState();
+                renderUI();
+            }
+        }
+
+        function editItemTemplateName(itemId) {
+            const items = appState.storeData[appState.activeStoreId] || [];
+            const target = items.find(i => i.id === itemId);
+            if (!target) return;
+
+            const userInput = prompt(`Rename blueprint text for "${target.name}":`, target.name);
+            if (userInput === null) return; 
+
+            const trimmed = userInput.trim();
+            if (!trimmed) return;
+
+            const capitalizedName = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+
+            // Duplicate item validation (case insensitive, excluding itself)
+            const isDuplicate = items.some(i => i.id !== itemId && i.name.toLowerCase() === capitalizedName.toLowerCase());
+            if (isDuplicate) {
+                alert(`Error: A profile named "${capitalizedName}" already exists inside this inventory template.`);
+                return;
+            }
+
+            target.name = capitalizedName;
+            saveAppState();
+            renderUI();
+        }
+
+        function permanentlyDeleteItem(itemId) {
+            let items = appState.storeData[appState.activeStoreId] || [];
+            appState.storeData[appState.activeStoreId] = items.filter(i => i.id !== itemId);
+            saveAppState();
+            renderUI();
+        }
+
+        function bulkSelectAllMaster() {
+            const items = appState.storeData[appState.activeStoreId] || [];
+            items.forEach(item => {
+                item.inActiveList = true;
+            });
+            saveAppState();
+            renderUI();
+        }
+
+        function bulkClearAllMaster() {
+            const items = appState.storeData[appState.activeStoreId] || [];
+            items.forEach(item => {
+                item.inActiveList = false;
+                item.checked = false;
+            });
+            saveAppState();
+            renderUI();
+        }
+
+        function endTrip() {
+            let items = appState.storeData[appState.activeStoreId] || [];
+            appState.storeData[appState.activeStoreId] = items.map(item => {
+                if (item.checked) {
+                    item.inActiveList = false;
+                    item.checked = false;
+                }
+                return item;
+            });
+            saveAppState();
+            renderUI();
+        }
+
+        // 6. Quick Select Bottom Sheet Logic Engine
+        function openAddItemModal() {
+            const backdrop = document.getElementById('modalBackdrop');
+            const sheet = document.getElementById('bottomSheet');
+            const sheetTitle = document.getElementById('sheetTitle');
+            const sheetSearchInput = document.getElementById('sheetSearchInput');
+            const sheetInfoText = document.getElementById('sheetInfoText');
+            
+            if (appState.viewMode === 'master') {
+                sheetTitle.textContent = "Add to Master Inventory";
+                sheetSearchInput.placeholder = "Type item to add to template inventory...";
+                sheetInfoText.textContent = "Press Enter or tap the option below to add a brand new item profile.";
+            } else {
+                sheetTitle.textContent = "Add to Shopping List";
+                sheetSearchInput.placeholder = "Search inventory or type new item...";
+                sheetInfoText.textContent = "Tap an item to add it directly. Press Enter to build a new item.";
+            }
+
+            renderSheetOptions();
+            backdrop.classList.add('open');
+            sheet.classList.add('open');
+
+            sheet.addEventListener('transitionend', function focusHandler(e) {
+                if (e.propertyName === 'transform') {
+                    sheetSearchInput.focus();
+                    sheet.removeEventListener('transitionend', focusHandler);
+                }
+            });
+        }
+
+        function closeAddItemModal() {
+            document.getElementById('modalBackdrop').classList.remove('open');
+            document.getElementById('bottomSheet').classList.remove('open');
+            document.getElementById('sheetSearchInput').value = '';
+            document.getElementById('sheetSearchInput').blur();
+        }
+
+        function renderSheetOptions() {
+            const listContainer = document.getElementById('sheetSelectionList');
+            const rawQuery = document.getElementById('sheetSearchInput').value.trim();
+            const query = rawQuery.toLowerCase();
+            const displayQuery = rawQuery ? (rawQuery.charAt(0).toUpperCase() + rawQuery.slice(1)) : '';
+            listContainer.innerHTML = '';
+
+            const items = appState.storeData[appState.activeStoreId] || [];
+
+            // Context: Add to Master Inventory Mode
+            if (appState.viewMode === 'master') {
+                if (!rawQuery) {
+                    listContainer.innerHTML = `<div style="padding:16px; text-align:center; color: var(--text-secondary); font-size:14px;">Type a custom item name above to insert it into this store's inventory templates.</div>`;
+                    return;
+                }
+
+                const matches = items.filter(i => i.name.toLowerCase().includes(query));
+                if (matches.length > 0) {
+                    matches.forEach(item => {
+                        const row = document.createElement('div');
+                        row.className = 'select-option-row';
+                        row.style.color = 'var(--text-hint)';
+                        row.style.background = 'var(--surface2)';
+                        row.style.cursor = 'default';
+                        row.textContent = `• ${item.name} (Already Exists)`;
+                        listContainer.appendChild(row);
+                    });
+                }
+
+                const isExactDuplicate = items.some(i => i.name.toLowerCase() === query);
+                if (!isExactDuplicate) {
+                    listContainer.innerHTML += `
+                        <div class="select-option-row" style="color: var(--purple-800); background: var(--purple-50);" onclick="createNewCustomItem('${escapeHtml(displayQuery)}')">
+                            ✨ Create & Template "${escapeHtml(displayQuery)}"
+                        </div>`;
+                }
+                return;
+            }
+
+            // Context: Add to Shopping List Mode
+            let candidateOptions = items.filter(i => !i.inActiveList);
+
+            if (query) {
+                candidateOptions = candidateOptions.filter(i => i.name.toLowerCase().includes(query));
+            }
+
+            if (candidateOptions.length === 0) {
+                if (displayQuery) {
+                    listContainer.innerHTML = `
+                        <div class="select-option-row" style="color: var(--blue-800); background: var(--blue-50);" onclick="createNewCustomItem('${escapeHtml(displayQuery)}')">
+                            ✨ Create & Add "${escapeHtml(displayQuery)}" to your list...
+                        </div>`;
+                } else {
+                    listContainer.innerHTML = `<div style="padding:16px; text-align:center; color: var(--text-secondary); font-size:14px;">All inventory options are already active on your list!</div>`;
+                }
+                return;
+            }
+
+            candidateOptions.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'select-option-row';
+                row.textContent = item.name;
+                row.onclick = () => {
+                    toggleItemActiveState(item.id);
+                    renderSheetOptions(); 
+                };
+                listContainer.appendChild(row);
+            });
+        }
+
+        function handleManualSearchSubmit(e) {
+            e.preventDefault();
+            const query = document.getElementById('sheetSearchInput').value.trim();
+            if (!query) return;
+
+            createNewCustomItem(query);
+        }
+
+        function createNewCustomItem(name) {
+            let trimmedName = name.trim();
+            if (!trimmedName) return;
+
+            // Auto capitalize first letter
+            const capitalizedName = trimmedName.charAt(0).toUpperCase() + trimmedName.slice(1);
+
+            if (!appState.storeData[appState.activeStoreId]) {
+                appState.storeData[appState.activeStoreId] = [];
+            }
+
+            const items = appState.storeData[appState.activeStoreId];
+            
+            // Check for duplicate item (case-insensitive)
+            const existingMatch = items.find(i => i.name.toLowerCase() === capitalizedName.toLowerCase());
+
+            if (existingMatch) {
+                if (appState.viewMode === 'active') {
+                    existingMatch.inActiveList = true;
+                }
+                saveAppState();
+                renderUI();
+                document.getElementById('sheetSearchInput').value = '';
+                renderSheetOptions();
+                return;
+            }
+
+            const isMasterMode = (appState.viewMode === 'master');
+            const newItem = {
+                id: `${appState.activeStoreId}-${Date.now()}`,
+                name: capitalizedName,
+                inActiveList: !isMasterMode, 
+                checked: false
+            };
+
+            appState.storeData[appState.activeStoreId].push(newItem);
+            saveAppState();
+            renderUI();
+            
+            document.getElementById('sheetSearchInput').value = '';
+            renderSheetOptions();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // 7. Power Utility Configuration (Screen Wake Lock Wrapper)
+        async function evalWakeLockStatus() {
+            if (!('wakeLock' in navigator)) return;
+
+            let needsLock = false;
+            for (const storeId in appState.storeData) {
+                const items = appState.storeData[storeId];
+                if (items.some(i => i.inActiveList && !i.checked)) {
+                    needsLock = true;
+                    break;
+                }
+            }
+
+            try {
+                if (needsLock && !wakeLockObj) {
+                    wakeLockObj = await navigator.wakeLock.request('screen');
+                    wakeLockObj.addEventListener('release', () => {
+                        wakeLockObj = null;
+                    });
+                } else if (!needsLock && wakeLockObj) {
+                    await wakeLockObj.release();
+                    wakeLockObj = null;
+                }
+            } catch (err) {
+                console.warn('System WakeLock Request Aborted Contextually:', err);
+            }
+        }
+
+        document.addEventListener('visibilitychange', async () => {
+            if (wakeLockObj !== null && document.visibilityState === 'visible') {
+                evalWakeLockStatus();
+            }
+        });
+
+        // 8. Lifecycle Storage I/O Handling (Backup & System Synchronization Strategy)
+        function exportBackup() {
+            const payload = JSON.stringify(appState, null, 2);
+            const isoDate = new Date().toISOString().split('T')[0];
+            const fileBlob = new Blob([payload], { type: 'application/json' });
+            
+            const anchor = document.createElement('a');
+            anchor.href = URL.createObjectURL(fileBlob);
+            anchor.download = `lists_backup_${isoDate}.json`;
+            anchor.click();
+            URL.revokeObjectURL(anchor.href);
+        }
+
+        function triggerImport() {
+            document.getElementById('importFileInput').click();
+        }
+
+        function handleImport(event) {
+            const input = event.target;
+            if (!input.files || input.files.length === 0) return;
+
+            const targetFile = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const parsedData = JSON.parse(e.target.result);
+                    if (parsedData && typeof parsedData === 'object' && parsedData.storeData) {
+                        appState = parsedData;
+                        saveAppState();
+                        renderUI();
+                        alert('Data successfully imported.');
+                    } else {
+                        alert('Error: Invalid structure inside file.');
+                    }
+                } catch (err) {
+                    alert('Failed to parse file payload.');
+                }
+                input.value = ''; 
+            };
+            reader.readAsText(targetFile);
+        }
+
+        function resetData() {
+            if (confirm('Are you sure you want to completely clear current lists and restore defaults?')) {
+                seedApplicationData();
+                clearMainSearch();
+                renderUI();
+            }
+        }
+
+        // 9. Document Model Painting Engine (UI Pipeline Architecture)
+        function renderUI() {
+            const tabsContainer = document.getElementById('storeTabs');
+            tabsContainer.innerHTML = '';
+            
+            APP_CONFIG.stores.forEach(store => {
+                const tabButton = document.createElement('button');
+                tabButton.className = `tab ${store.id === appState.activeStoreId ? 'active' : ''}`;
+                tabButton.textContent = store.name;
+                tabButton.onclick = () => switchStore(store.id);
+                tabsContainer.appendChild(tabButton);
+            });
+
+            const activeToggle = document.getElementById('btnViewActive');
+            const masterToggle = document.getElementById('btnViewMaster');
+            const endTripButton = document.getElementById('btnEndTrip');
+            const bulkToolbar = document.getElementById('bulkActionsToolbar');
+
+            if (appState.viewMode === 'active') {
+                activeToggle.classList.add('active');
+                masterToggle.classList.remove('active');
+                endTripButton.style.display = 'flex';
+                bulkToolbar.style.display = 'none';
+            } else {
+                activeToggle.classList.remove('active');
+                masterToggle.classList.add('active');
+                endTripButton.style.display = 'none';
+                bulkToolbar.style.display = 'flex';
+            }
+
+            const listContainer = document.getElementById('listContent');
+            listContainer.innerHTML = '';
+
+            let items = appState.storeData[appState.activeStoreId] || [];
+
+            // Apply Smart Query Filtering Logic if string exists
+            if (mainSearchQuery) {
+                items = items.filter(item => item.name.toLowerCase().includes(mainSearchQuery));
+            }
+
+            if (appState.viewMode === 'active') {
+                const activeItems = items.filter(i => i.inActiveList);
+                if (activeItems.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="empty-state">
+                            ${mainSearchQuery ? 'No filtered matches active on this shopping list.' : '<strong>Your shopping list is clear!</strong><br><br>Tap "+ Add Items" to browse your master choices, or swipe horizontally to switch stores.'}
+                        </div>`;
+                    return;
+                }
+
+                activeItems.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = `item-row ${item.checked ? 'checked' : ''}`;
+                    row.innerHTML = `
+                        <div class="item-interactive-zone" onclick="toggleItemCheckedState('${item.id}')">
+                            <div class="checkbox-ui"></div>
+                            <span class="item-name">${item.name}</span>
+                        </div>
+                    `;
+                    listContainer.appendChild(row);
+                });
+
+            } else {
+                if (items.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="empty-state">
+                            ${mainSearchQuery ? 'No filtered matches exist inside this inventory pool.' : 'No elements stored in this store\'s inventory yet. Tap below to create item templates.'}
+                        </div>`;
+                    return;
+                }
+
+                items.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = `item-row ${item.inActiveList ? 'is-added' : 'not-added'}`;
+                    row.innerHTML = `
+                        <div class="item-interactive-zone" onclick="toggleItemActiveState('${item.id}')">
+                            <div class="checkbox-ui"></div>
+                            <span class="item-name">${item.name}</span>
+                        </div>
+                        <div class="item-row-controls">
+                            <button class="btn-edit-item" onclick="editItemTemplateName('${item.id}')" aria-label="Edit inventory profile text">✎</button>
+                            <button class="btn-delete" onclick="permanentlyDeleteItem('${item.id}')" aria-label="Delete permanent element">×</button>
+                        </div>
+                    `;
+                    listContainer.appendChild(row);
+                });
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
