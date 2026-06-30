@@ -818,22 +818,22 @@ function buildStoreHTML(storeName) {
   }
   html += `</div>`;
 
-  // ── Master Inventory ──
+  // ── Master Inventory (Filtered to show only items NOT on the shopping list) ──
+  const visiblePool = s.pool.filter(item => !activeIds.has(item.id));
+
   html += `<div class="section">
     <div class="section-header">
       <span class="section-title">Master Inventory</span>
-      <span class="section-count">${s.pool.length}</span>
+      <span class="section-count">${visiblePool.length}</span>
     </div>`;
 
-  if (s.pool.length) {
+  if (visiblePool.length) {
     html += `<div class="list-card">`;
-    s.pool.forEach(item => {
-      const inActive = activeIds.has(item.id);
-      html += `<div class="pool-item${inActive ? ' in-active' : ''}" data-pool-id="${item.id}" data-store="${storeName}">
+    visiblePool.forEach(item => {
+      html += `<div class="pool-item" data-pool-id="${item.id}" data-store="${storeName}">
         <button class="pool-add-btn" data-pool-id="${item.id}" data-store="${storeName}" aria-label="Add ${escHtml(item.name)} to list">
           <span class="pool-item-dot"></span>
           <span class="pool-item-name">${escHtml(item.name)}</span>
-          <span class="active-badge">ON LIST</span>
         </button>
         <button class="pool-delete-btn" data-pool-id="${item.id}" data-store="${storeName}" aria-label="Remove from inventory">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -847,7 +847,7 @@ function buildStoreHTML(storeName) {
         <div class="empty-state-icon">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
         </div>
-        <p>No items yet. Add one below.</p>
+        <p>${s.pool.length ? 'All inventory items are currently on your shopping list!' : 'No items yet. Add one below.'}</p>
       </div>
     </div>`;
   }
